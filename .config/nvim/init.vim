@@ -54,8 +54,10 @@ call plug#begin('~/.local/share/nvim/site/plugged')
   "Plug 'bling/vim-airline' 
 
   " Try the below thing out when neovim 0.5 is released
-  Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
-  Plug 'kyazdani42/nvim-web-devicons' " lua
+  "Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+  Plug 'feline-nvim/feline.nvim'
+"  Plug 'kyazdani42/nvim-web-devicons' " lua
+
 
 
   """" Language server stuff
@@ -123,6 +125,8 @@ lua << EOF
     };
   })
 EOF
+
+"lua require('lua/plugins/status-line.lua')
 
 " Bind jk when in visual / insert modes to <esc>.
 " It's closer than hitting <esc>, though I must say it is 2 keys... slow
@@ -225,11 +229,14 @@ augroup END
 
 
 
-function! ConfigStatusLine()
-  lua require('plugins.status-line')
-endfunction
+"function! ConfigStatusLine()
+"  lua require('plugins.status-line')
+"endfunction
+"
+"augroup status_line_init
+"  autocmd!
+"  autocmd VimEnter * call ConfigStatusLine()
+"augroup END
 
-augroup status_line_init
-  autocmd!
-  autocmd VimEnter * call ConfigStatusLine()
-augroup END
+set termguicolors
+lua require('feline').setup()

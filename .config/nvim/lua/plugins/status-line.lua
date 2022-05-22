@@ -1,174 +1,187 @@
--- https://github.com/bartoszmaka/dotfiles/blob/master/vim/lua/plugins/galaxyline.lua
-
-local vim = vim
-local galaxyline = require('galaxyline')
-
-local section = galaxyline.section
-
-local onedark = {
-        black = '#0c0e15',
-          bg0 = '#1a212e',
-          bg1 = '#21283b',
-          bg2 = '#283347',
-          bg3 = '#2a324a',
-         bg_d = '#141b24',
-      bg_blue = '#54b0fd',
-    bg_yellow = '#f2cc81',
-           fg = '#93a4c3',
-       purple = '#c75ae8',
-        green = '#8bcd5b',
-       orange = '#dd9046',
-         blue = '#41a7fc',
-       yellow = '#efbd5d',
-         cyan = '#34bfd0',
-          red = '#f65866',
-         grey = '#455574',
-    dark_cyan = '#1b6a73',
-     dark_red = '#992525',
-  dark_yellow = '#8f610d',
-  dark_purple = '#862aa1',
-    diff_add  = '#27341c',
-  diff_delete = '#331c1e',
-  diff_change = '#102b40',
-    diff_text = '#1c4a6e'
-}
+local gl = require('galaxyline')
+local gls = gl.section
+gl.short_line_list = {'LuaTree','vista','dbui'}
 
 local colors = {
-  bg = onedark.bg0,
-  bg_inactive = onedark.bg3,
-  fg = onedark.fg,
-  fg_focus = '#f8f8f2',
-  section_bg = onedark.bg0,
-  ellow = onedark.bg_yellow,
-  cyan = onedark.cyan,
-  green = onedark.green,
-  orange = onedark.orange,
-  magenta = onedark.purple,
-  blue = onedark.blue,
-  red = onedark.red,
-  black = onedark.black,
+  bg = '#282c34',
+  yellow = '#fabd2f',
+  cyan = '#008080',
+  darkblue = '#081633',
+  green = '#afd700',
+  orange = '#FF8800',
+  purple = '#5d4d7a',
+  magenta = '#d16d9e',
+  grey = '#c0c0c0',
+  blue = '#0087d7',
+  red = '#ec5f67'
 }
 
 local buffer_not_empty = function()
-  return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
-end
-
-local mode_color = function()
-  local mode_colors = {
-    n = colors.green,
-    i = colors.blue,
-    c = colors.orange,
-    V = colors.magenta,
-    [''] = colors.magenta,
-    v = colors.magenta,
-    R = colors.red,
-  }
-
-  local color = mode_colors[vim.fn.mode()]
-
-  if color == nil then
-    color = colors.red
+  if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
+    return true
   end
-
-  return color
+  return false
 end
 
-section.left[1] = {
-  ViMode = {
-    provider = function()
-      local alias = {
-        n = 'NORMAL',
-        i = 'INSERT',
-        c = 'COMMAND',
-        V = 'VISUAL',
-        [''] = 'VISUAL',
-        v = 'VISUAL',
-        R = 'REPLACE',
-      }
-      vim.api.nvim_command('hi GalaxyViMode gui=bold guibg='..mode_color())
-      local alias_mode = alias[vim.fn.mode()]
-      if alias_mode == nil then
-        alias_mode = vim.fn.mode()
-      end
-      return '  '..alias_mode..' '
-    end,
-    separator = ' ',
-    highlight = { colors.bg, colors.section_bg },
-    separator_highlight = {colors.bg, colors.section_bg },
+gls.left[1] = {
+  FirstElement = {
+    provider = function() return '▋' end,
+    highlight = {colors.blue,colors.yellow}
   },
 }
-
-section.left[2] = {
+gls.left[2] = {
+  ViMode = {
+    provider = function()
+      local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v= 'VISUAL',V= 'VISUAL LINE', [''] = 'VISUAL BLOCK'}
+      return alias[vim.fn.mode()]
+    end,
+    separator = '',
+    separator_highlight = {colors.purple,function()
+      if not buffer_not_empty() then
+        return colors.purple
+      end
+      return colors.darkblue
+    end},
+    highlight = {colors.darkblue,colors.purple,'bold'},
+  },
+}
+gls.left[3] ={
   FileIcon = {
     provider = 'FileIcon',
     condition = buffer_not_empty,
-    highlight = { require('galaxyline.provider_fileinfo').get_file_icon_color, colors.section_bg },
+    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.darkblue},
   },
 }
-
-section.left[3] = {
+gls.left[4] = {
   FileName = {
-    provider = function ()
-      return vim.fn.expand('%f')
-    end,
+    provider = {'FileName','FileSize'},
     condition = buffer_not_empty,
-    highlight = { colors.fg, colors.section_bg },
-    separator_highlight = {colors.fg, colors.section_bg },
+    separator = '',
+    separator_highlight = {colors.purple,colors.darkblue},
+    highlight = {colors.magenta,colors.darkblue}
   }
 }
 
-section.right[1]= {
-  LineColumn = {
-    provider = function ()
-      vim.api.nvim_command('hi GalaxyLineColumn guibg='..mode_color())
-      local max_lines = vim.fn.line('$')
-      local line = vim.fn.line('.')
-      local column = vim.fn.col('.')
-      return string.format(" %3d/%d:%d ", line, max_lines, column)
-    end,
-    separator = ' ',
-    highlight = { colors.black, mode_color() },
-    separator_highlight = { colors.black, colors.section_bg },
-  }
-}
-
-section.short_line_left[1] = {
-  SpacerInactive = {
-    provider = function()
-      return '  '
-    end,
-    highlight = { colors.fg, colors.bg_inactive },
-    separator_highlight = {colors.fg, colors.bg_inactive },
-  }
-}
-
-section.short_line_left[2] = {
-  FileIconInactive = {
-    provider = 'FileIcon',
+gls.left[5] = {
+  GitIcon = {
+    provider = function() return '  ' end,
     condition = buffer_not_empty,
-    separator = ' ',
-    highlight = { colors.fg, colors.bg_inactive },
-    separator_highlight = { require('galaxyline.provider_fileinfo').get_file_icon_color,  colors.bg_inactive },
+    highlight = {colors.orange,colors.purple},
   }
 }
-section.short_line_left[3] = {
-  FileNameInactive = {
-    provider = function ()
-      return vim.fn.expand('%f')
-    end,
-    separator = ' ',
-    highlight = { colors.fg, colors.bg_inactive },
-    separator_highlight = { colors.fg, colors.bg_inactive },
+gls.left[6] = {
+  GitBranch = {
+    provider = 'GitBranch',
+    condition = buffer_not_empty,
+    highlight = {colors.grey,colors.purple},
   }
 }
 
-section.short_line_right[1] = {
-  LineColumnInactive = {
+local checkwidth = function()
+  local squeeze_width  = vim.fn.winwidth(0) / 2
+  if squeeze_width > 40 then
+    return true
+  end
+  return false
+end
+
+gls.left[7] = {
+  DiffAdd = {
+    provider = 'DiffAdd',
+    condition = checkwidth,
+    icon = ' ',
+    highlight = {colors.green,colors.purple},
+  }
+}
+gls.left[8] = {
+  DiffModified = {
+    provider = 'DiffModified',
+    condition = checkwidth,
+    icon = ' ',
+    highlight = {colors.orange,colors.purple},
+  }
+}
+gls.left[9] = {
+  DiffRemove = {
+    provider = 'DiffRemove',
+    condition = checkwidth,
+    icon = ' ',
+    highlight = {colors.red,colors.purple},
+  }
+}
+gls.left[10] = {
+  LeftEnd = {
+    provider = function() return '' end,
+    separator = '',
+    separator_highlight = {colors.purple,colors.bg},
+    highlight = {colors.purple,colors.purple}
+  }
+}
+gls.left[11] = {
+  DiagnosticError = {
+    provider = 'DiagnosticError',
+    icon = '  ',
+    highlight = {colors.red,colors.bg}
+  }
+}
+gls.left[12] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+}
+gls.left[13] = {
+  DiagnosticWarn = {
+    provider = 'DiagnosticWarn',
+    icon = '  ',
+    highlight = {colors.blue,colors.bg},
+  }
+}
+gls.right[1]= {
+  FileFormat = {
+    provider = 'FileFormat',
+    separator = '',
+    separator_highlight = {colors.bg,colors.purple},
+    highlight = {colors.grey,colors.purple},
+  }
+}
+gls.right[2] = {
+  LineInfo = {
     provider = 'LineColumn',
-    separator = ' ',
-    highlight = { colors.fg, colors.bg_inactive },
-    separator_highlight = { colors.fg, colors.bg_inactive },
+    separator = ' | ',
+    separator_highlight = {colors.darkblue,colors.purple},
+    highlight = {colors.grey,colors.purple},
+  },
+}
+gls.right[3] = {
+  PerCent = {
+    provider = 'LinePercent',
+    separator = '',
+    separator_highlight = {colors.darkblue,colors.purple},
+    highlight = {colors.grey,colors.darkblue},
+  }
+}
+gls.right[4] = {
+  ScrollBar = {
+    provider = 'ScrollBar',
+    highlight = {colors.yellow,colors.purple},
   }
 }
 
-galaxyline.load_galaxyline()
+gls.short_line_left[1] = {
+  BufferType = {
+    provider = 'FileTypeName',
+    separator = '',
+    separator_highlight = {colors.purple,colors.bg},
+    highlight = {colors.grey,colors.purple}
+  }
+}
+
+
+gls.short_line_right[1] = {
+  BufferIcon = {
+    provider= 'BufferIcon',
+    separator = '',
+    separator_highlight = {colors.purple,colors.bg},
+    highlight = {colors.grey,colors.purple}
+  }
+}

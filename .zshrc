@@ -5,13 +5,20 @@
 export ZSH="/Users/Sam/.oh-my-zsh"
 export GOPATH=/Users/Sam/go
 
+export PATH=$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin
 export PATH=/usr/local/bin/:$PATH
 export PATH=$PATH:/opt/local/bin/
+export PATH=$PATH:/Applications/Wine\ Stable.app/Contents/Resources/wine/bin
 export PATH=$PATH:/Library/Frameworks/Python.framework/Versions/3.7/bin
 export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:/Users/Sam/bin
+
+export KUBECONFIG=/Users/Sam/.kube/oracle.config
 
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"   
 
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 #
 # Set name of the theme to load --- if set to "random", it will
