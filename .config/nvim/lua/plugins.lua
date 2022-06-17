@@ -28,6 +28,9 @@ return require('packer').startup(function(use)
   use { 'sheerun/vim-polyglot' } -- Extra syntax highlighting
   use { 'tpope/vim-sensible' } -- Sensible set of defaults
   use { 'tpope/vim-surround' } -- Vim Surround
+  use { 'numToStr/Comment.nvim', config = lua_path"comment"} 
+  use { 'junegunn/vim-easy-align' }
+  use { 'chrisbra/csv.vim' }
   
   -- API features
   use { 'nvim-lua/popup.nvim' }
@@ -57,6 +60,9 @@ return require('packer').startup(function(use)
   use { 'kyazdani42/nvim-web-devicons' }
   use { 'ryanoasis/vim-devicons' }
 
+  -- Explorer
+  use { 'kyazdani42/nvim-tree.lua', config = lua_path"nvimtree" }
+
   -- Colorscheme
   use { 'sainnhe/gruvbox-material' }
 
@@ -68,10 +74,10 @@ return require('packer').startup(function(use)
   use { 'romgrk/barbar.nvim' } -- Tabs
 
 
-  -- Telescope
-  use { 'nvim-telescope/telescope.nvim', config = lua_path"telescope" }
-  use { 'nvim-telescope/telescope-fzy-native.nvim' }
-  use { 'cljoly/telescope-repo.nvim' }
+  -- Telescope NOTE: There's a weird issue on macos 10.13 where the find_files breaks
+  -- use { 'nvim-telescope/telescope.nvim', config = lua_path"telescope" }
+  -- use { 'nvim-telescope/telescope-fzy-native.nvim' }
+  -- use { 'cljoly/telescope-repo.nvim' }
   -- use { 'nvim-telescope/telescope-dap.nvim' }
 
   -- Copilot
