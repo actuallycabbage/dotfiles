@@ -12,12 +12,12 @@ vim.cmd('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
 
 
 require'lspconfig'.pyright.setup{
-  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-  on_attach = require('lsp_signature').on_attach
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+--  on_attach = require('lsp_signature').on_attach
 }
 require'lspconfig'.gopls.setup{
   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-  on_attach = require('lsp_signature').on_attach,
+--  on_attach = require('lsp_signature').on_attach,
   settings= {
     gopls = {
 --      useWorkspaceFolders = true,

@@ -6,6 +6,9 @@ end
 
 -- A lot has been borrowed from https://github.com/crivotz/nv-ide/blob/master/lua/plugins.lua
 -- In this file
+--
+-- Other things worth looking at
+-- https://github.com/rafamadriz/dotfiles/blob/b90a6107915db55fba97d161a002e3902a25dd09/private_dot_config/nvim/lua/plugins/init.lua
 
 -- This block will get packer to update all the plugins on buffer write, beware
 -- Run PackerSync to download them
@@ -23,6 +26,14 @@ return require('packer').startup(function(use)
   -- Get packer to keep itself updated
   use { 'wbthomason/packer.nvim' }
 
+  -- Icons
+  use { 'kyazdani42/nvim-web-devicons' }
+  use { 'ryanoasis/vim-devicons' }
+
+  -- API features
+  use { 'nvim-lua/popup.nvim' }
+  use { 'nvim-lua/plenary.nvim' }
+
   -- General
   use { 'zhimsel/vim-stay' } -- Buffer states
   use { 'sheerun/vim-polyglot' } -- Extra syntax highlighting
@@ -31,10 +42,12 @@ return require('packer').startup(function(use)
   use { 'numToStr/Comment.nvim', config = lua_path"comment"} 
   use { 'junegunn/vim-easy-align' }
   use { 'chrisbra/csv.vim' }
-  
-  -- API features
-  use { 'nvim-lua/popup.nvim' }
-  use { 'nvim-lua/plenary.nvim' }
+  use {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup()
+    end
+}
   
   -- LSP
   use { 'neovim/nvim-lspconfig' }
@@ -47,18 +60,18 @@ return require('packer').startup(function(use)
 
 
   -- Autocomplete
-  use { 'hrsh7th/cmp-nvim-lsp' }
-  use { 'hrsh7th/cmp-buffer'}
-  use { 'hrsh7th/cmp-path' }
-  use { 'hrsh7th/cmp-cmdline' }
-  use { 'hrsh7th/nvim-cmp' }
-  use { 'hrsh7th/cmp-vsnip' }
-  use { 'hrsh7th/vim-vsnip' }
-  use { "ray-x/lsp_signature.nvim" } -- Gives the nice visual for function defs
-
-  -- Icons
-  use { 'kyazdani42/nvim-web-devicons' }
-  use { 'ryanoasis/vim-devicons' }
+  use ({
+      'hrsh7th/nvim-cmp',
+      requires = {
+        { 'hrsh7th/cmp-nvim-lsp' },
+        { 'hrsh7th/cmp-buffer'},
+        { 'hrsh7th/cmp-path' },
+        { 'hrsh7th/cmp-cmdline' },
+        { 'hrsh7th/cmp-vsnip' },
+        { 'hrsh7th/vim-vsnip' },
+        { 'hrsh7th/cmp-nvim-lsp-signature-help' }
+     }
+  })
 
   -- Explorer
   use { 'kyazdani42/nvim-tree.lua', config = lua_path"nvimtree" }
@@ -71,14 +84,20 @@ return require('packer').startup(function(use)
   
   -- Lines
   use { 'famiu/feline.nvim' , config = lua_path"feline" } -- Statusline
-  use { 'romgrk/barbar.nvim' } -- Tabs
+  --use { 'romgrk/barbar.nvim' } -- Puts your buffers up in the tab bar
+  use {
+    "nanozuki/tabby.nvim",
+    config = function() require("tabby").setup() end,
+  }
 
 
-  -- Telescope NOTE: There's a weird issue on macos 10.13 where the find_files breaks
-  -- use { 'nvim-telescope/telescope.nvim', config = lua_path"telescope" }
-  -- use { 'nvim-telescope/telescope-fzy-native.nvim' }
-  -- use { 'cljoly/telescope-repo.nvim' }
-  -- use { 'nvim-telescope/telescope-dap.nvim' }
+  -- Telescope
+  -- If for some weird reason you're getting the chkstk_darwin issue, find out where fzy-lua-native got installed to
+  -- and run its makefile
+  use { 'nvim-telescope/telescope.nvim', config = lua_path"telescope" }
+  use { 'nvim-telescope/telescope-fzy-native.nvim', run="make" }
+  use { 'cljoly/telescope-repo.nvim' }
+  use { 'nvim-telescope/telescope-dap.nvim' }
 
   -- Copilot
   --use { 'github/copilot.vim' } -- run :Copilot setup
