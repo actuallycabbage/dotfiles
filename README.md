@@ -1,15 +1,13 @@
 # Dotfiles
 
-Atlassian has an excellent guide on dealing with dotfiles (https://www.atlassian.com/git/tutorials/dotfiles)
+Atlassian has an excellent guide on dealing with dotfiles (https://www.atlassian.com/git/tutorials/dotfiles) consult this readme.
 
-
-## Installing
+## Installing the files
 1. `alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"`
-2. Read https://www.atlassian.com/git/tutorials/dotfiles and update this README when figured out.
+2. `git clone --bare <git-repo-url> $HOME/.cfg`
+3. You'll probably have a bunch of files in staging now. If you don't care about losing any local changes you can yolo it with `dotfiles reset --hard HEAD`
+
+## Some things might not be completely installed, go check out $HOME/scripts and see
 
 ## Fonts
-Trying out RobotoMono, download a pre-patched (NerdFonts) version of it [here](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/RobotoMono) (instead of cloning the repo they compile all the fonts into `.zip`s in the release tab.
-
-`unzip RobotoMono.zip -d /Library/Fonts`
-
-On MacOS, font installation means chucking everything into /Library/Fonts
+[FantasqueSansMono](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FantasqueSansMono)
