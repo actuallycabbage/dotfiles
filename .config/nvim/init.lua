@@ -5,3 +5,5 @@ require('settings.colour')
 require('settings.linenumber')
 require('settings.completion')
 require('settings.remap')
+require('settings.yank')
+

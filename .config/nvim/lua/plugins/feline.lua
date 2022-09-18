@@ -81,8 +81,6 @@ force_inactive.buftypes = {
   'terminal'
 }
 
--- STATUSLINE
--- LEFT
 
 -- vi-mode
 -- components.active[1][1] = {
@@ -115,109 +113,62 @@ force_inactive.buftypes = {
 -- }
 
 local vi_mode_text = {
-    n = "NORMAL",
-    i = "INSERT",
-    v = "VISUAL",
-    ['']= "V-BLOCK",
-    V = "V-LINE",
-    c = "COMMAND",
-    no = "UNKNOWN",
-    s = "UNKNOWN",
-    S = "UNKNOWN",
-    ic = "UNKNOWN",
-    R = "REPLACE",
-    Rv = "UNKNOWN",
-    cv = "UNKWON",
-    ce = "UNKNOWN",
-    r = "REPLACE",
-    rm = "UNKNOWN",
-    t = "INSERT"
+    n       = "NORMAL",
+    i       = "INSERT",
+    v       = "VISUAL",
+    ['']  = "V-BLOCK",
+    V       =	"V-LINE",
+    c       =	"COMMAND",
+    no      =	"UNKNOWN",
+    s       =	"UNKNOWN",
+    S		    =	"UNKNOWN",
+    ic			=	"UNKNOWN",
+    R			  =	"REPLACE",
+    Rv			=	"UNKNOWN",
+    cv			=	"UNKWON",
+    ce			=	"UNKNOWN",
+    r			  =	"REPLACE",
+    rm			=	"UNKNOWN",
+    t			  =	"INSERT"
 }
 
-table.insert(components.active[1], {
-    provider = function()
-      local current_text = ' '..vi_mode_text[vim.fn.mode()]..' '
-      return current_text
-    end,
-    hl = function()
-        local val = {
-            name = vi_mode_utils.get_mode_highlight_name(),
-            fg = colors.bg,
-            bg = vi_mode_utils.get_mode_color(),
-            style = 'bold'
-        }
-        return val
-    end,
-   rep_sep = ' '
-})
-
--- table.insert(components.active[1], {
---     provider = 'file_info',
---     hl = {
---       fg = colors.skyblue,
---       style = 'bold'
---     }
--- })
-
---filename
-table.insert(components.active[1], {
-  provider = function()
-    return vim.fn.expand("%:F")
-  end,
-  hl = {
-    fg = 'skyblue',
-    bg = 'bg',
-    style = 'bold'
-  },
-  left_sep=' '
-})
-
--- MID
-
--- gitBranch
-table.insert(components.active[2], {
-  provider = 'git_branch',
-  hl = {
-    fg = 'yellow',
-    bg = 'bg',
-    style = 'bold'
-  }
-})
+-- common components
+-- git stuff
 
 -- diffAdd
-table.insert(components.active[2], {
+local common_gitdiff_add = {
   provider = 'git_diff_added',
   hl = {
     fg = 'green',
     bg = 'bg',
     style = 'bold'
   }
-})
+}
 
 -- diffModfified
-table.insert(components.active[2], {
+local common_gitdiff_changed = {
   provider = 'git_diff_changed',
   hl = {
     fg = 'orange',
     bg = 'bg',
     style = 'bold'
   }
-})
+}
 
 -- diffRemove
-table.insert(components.active[2], {
+local common_gitdiff_removed = {
   provider = 'git_diff_removed',
   hl = {
     fg = 'red',
     bg = 'bg',
     style = 'bold'
   },
-})
+}
 
--- RIGHT
+-- file stuff
 
--- fileIcon
-components.active[3][1] = {
+-- icon
+local common_fileinfo_icon = {
   provider = function()
     local filename = vim.fn.expand('%:t')
     local extension = vim.fn.expand('%:e')
@@ -243,8 +194,8 @@ components.active[3][1] = {
   end,
   right_sep = ' '
 }
--- fileType
-components.active[3][2] = {
+
+local common_fileinfo_type = {
   provider = 'file_type',
   hl = function()
     local val = {}
@@ -262,6 +213,81 @@ components.active[3][2] = {
   end,
   right_sep = ' '
 }
+
+-- ACTIVE
+
+-- left
+
+table.insert(components.active[1], {
+    provider = function()
+      local current_text = ' '..vi_mode_text[vim.fn.mode()]..' '
+      return current_text
+    end,
+    priority = 2,
+    hl = function()
+        local val = {
+            name = vi_mode_utils.get_mode_highlight_name(),
+            fg = colors.bg,
+            bg = vi_mode_utils.get_mode_color(),
+            style = 'bold'
+        }
+        return val
+    end,
+   rep_sep = ' '
+})
+
+-- table.insert(components.active[1], {
+--     provider = 'file_info',
+--     hl = {
+--       fg = colors.skyblue,
+--       style = 'bold'
+--     }
+-- })
+
+--filename
+table.insert(components.active[1], {
+  provider = function()
+    return vim.fn.expand("%:F")
+  end,
+  priority = 2,
+  hl = {
+    fg = 'skyblue',
+    bg = 'bg',
+    style = 'bold'
+  },
+  left_sep=' ',
+  right_sep=' ',
+})
+
+-- MID
+
+-- gitBranch
+table.insert(components.active[2], {
+  provider = 'git_branch',
+  priority = 0,
+  truncate_hide = true,
+  hl = {
+    fg = 'yellow',
+    bg = 'bg',
+    style = 'bold'
+  }
+})
+
+-- diffAdd
+table.insert(components.active[2], common_gitdiff_add)
+
+-- diffModfified
+table.insert(components.active[2], common_gitdiff_changed)
+
+-- diffRemove
+table.insert(components.active[2], common_gitdiff_removed)
+
+-- RIGHT
+
+-- fileIcon
+table.insert(components.active[3], common_fileinfo_icon)
+-- fileType
+table.insert(components.active[3], common_fileinfo_type)
 -- fileSize
 components.active[3][3] = {
   provider = 'file_size',
@@ -323,7 +349,8 @@ components.active[3][8] = {
 
 -- INACTIVE
 
--- fileType
+-- left
+-- filename
 table.insert(components.inactive[1], {
   provider = function()
     return vim.fn.expand("%:F")
@@ -332,9 +359,26 @@ table.insert(components.inactive[1], {
     fg = 'oceanblue',
     bg = 'bg',
     style = 'bold'
-  }
+  },
+  left_sep = ' '
 })
 
+-- mid
+
+-- diffAdd
+table.insert(components.inactive[2], common_gitdiff_add)
+
+-- diffModfified
+table.insert(components.inactive[2], common_gitdiff_changed)
+
+-- diffRemove
+table.insert(components.inactive[2], common_gitdiff_removed)
+
+-- right
+-- fileIcon
+table.insert(components.inactive[3], common_fileinfo_icon)
+-- fileType
+table.insert(components.inactive[3], common_fileinfo_type)
 
 require('feline').setup({
   theme = colors,
