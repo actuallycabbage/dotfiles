@@ -15,6 +15,7 @@ require'lspconfig'.pyright.setup{
   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 --  on_attach = require('lsp_signature').on_attach
 }
+
 require'lspconfig'.gopls.setup{
   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
 --  on_attach = require('lsp_signature').on_attach,
@@ -31,6 +32,15 @@ require'lspconfig'.gopls.setup{
   }
   }
 }
+
+-- https://github.com/hashicorp/terraform-ls/releases
+require'lspconfig'.terraformls.setup{
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()), -- TODO: Don't actually know what this does. 
+}
+-- vim.api.nvim_create_autocmd({"BufWritePre"}, {
+--   pattern = {"*.tf", "*.tfvars"},
+--   callback = vim.lsp.buf.formatting_sync,
+-- })
 
 --require'lspconfig'.html.setup {
 --  filetypes = {"html", "eruby"},
