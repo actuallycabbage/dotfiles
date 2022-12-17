@@ -20,6 +20,8 @@ alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+# export DOCKER_HOST='unix:///Users/Sam/.local/share/containers/podman/machine/podman-machine-default/podman.sock'
+
 #
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
