@@ -1,31 +1,52 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="/Users/Sam/.oh-my-zsh"
-export GOPATH=/Users/Sam/go
+# sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-export PATH=$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin
+export AWS_DEFAULT_PROFILE=vi-prod
+
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+#
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:/usr/local/go/bin
+
+# export PATH=$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin
 export PATH=/usr/local/bin/:$PATH
 export PATH=$PATH:/opt/local/bin/
-export PATH=$PATH:/Applications/Wine\ Stable.app/Contents/Resources/wine/bin
-export PATH=$PATH:/Library/Frameworks/Python.framework/Versions/3.7/bin
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:/Users/Sam/bin
+# export PATH=$PATH:/Applications/Wine\ Stable.app/Contents/Resources/wine/bin
+# export PATH=$PATH:/Library/Frameworks/Python.framework/Versions/3.7/bin
+# export PATH=$PATH:/Users/Sam/bin
 
-export KUBECONFIG=/Users/Sam/.kube/oracle.config
+# export KUBECONFIG=/Users/Sam/.kube/oracle.config
 
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"   
 
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+export GIT_EDITOR=nvim
+
+alias k9s_prod='k9s --kubeconfig ~/.kube/config.vi-prod --all-namespaces'
+alias kubectl_prod='kubectl --kubeconfig ~/.kube/config.vi-prod'
+alias helmfile_prod='KUBECONFIG=$(readlink -f ~/.kube/config.vi-prod) helmfile'
+
+alias k9s_staging='k9s --kubeconfig ~/.kube/config.vi-staging --all-namespaces'
+alias kubectl_staging='kubectl --kubeconfig ~/.kube/config.vi-staging'
+alias helmfile_staging='KUBECONFIG=$(readlink -f ~/.kube/config.vi-staging) helmfile'
+
+alias k9s_dev='AWS_DEFAULT_PROFILE=default && k9s --kubeconfig ~/.kube/config.vi-dev --all-namespaces'
+alias kubectl_dev='AWS_DEFAULT_PROFILE=default && kubectl --kubeconfig ~/.kube/config.vi-dev'
+alias helmfile_dev='AWS_DEFAULT_PROFILE=default KUBECONFIG=$(readlink -f ~/.kube/config.vi-dev) helmfile'
+
 #
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="afowler"
+# ZSH_THEME="afowler"
+ZSH_THEME="superjarin"
 # wedisagree
 # tonotdo
 
@@ -88,7 +109,7 @@ ZSH_THEME="afowler"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git kubectl)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
