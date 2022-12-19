@@ -22,6 +22,7 @@ export PATH=$PATH:/opt/local/bin/
 # export KUBECONFIG=/Users/Sam/.kube/oracle.config
 
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"   
+alias lazygit_dotfiles="lazygit --git-dir=$HOME/.dotfiles --work-tree=$HOME"   
 
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -39,6 +40,8 @@ alias helmfile_staging='KUBECONFIG=$(readlink -f ~/.kube/config.vi-staging) helm
 alias k9s_dev='AWS_DEFAULT_PROFILE=default && k9s --kubeconfig ~/.kube/config.vi-dev --all-namespaces'
 alias kubectl_dev='AWS_DEFAULT_PROFILE=default && kubectl --kubeconfig ~/.kube/config.vi-dev'
 alias helmfile_dev='AWS_DEFAULT_PROFILE=default KUBECONFIG=$(readlink -f ~/.kube/config.vi-dev) helmfile'
+
+# export DOCKER_HOST='unix:///Users/Sam/.local/share/containers/podman/machine/podman-machine-default/podman.sock'
 
 #
 # Set name of the theme to load --- if set to "random", it will

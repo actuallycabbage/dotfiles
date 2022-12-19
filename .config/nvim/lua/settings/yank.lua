@@ -9,11 +9,7 @@
 --     augroup END
 -- endif
 -- ]], true)
---
---
--- set clipboard+=unnamedplus
---
---
+
 vim.api.nvim_exec(
 [[
 set clipboard+=unnamedplus
