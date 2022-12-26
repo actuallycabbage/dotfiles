@@ -27,8 +27,7 @@ return require('packer').startup(function(use)
   use { 'wbthomason/packer.nvim' }
 
   -- Icons
-  use { 'kyazdani42/nvim-web-devicons' }
-  use { 'ryanoasis/vim-devicons' }
+  use { 'nvim-tree/nvim-web-devicons' }
 
   -- API features
   use { 'nvim-lua/popup.nvim' }
@@ -51,7 +50,7 @@ return require('packer').startup(function(use)
   
   -- LSP
   use { 'neovim/nvim-lspconfig' }
-  use { 'onsails/lspkind-nvim' } -- Adds little logos to the autocomplete
+  use { 'onsails/lspkind-nvim' } -- Adds little pictures to the autocomplete
   use { 'fatih/vim-go' }
   use { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' }
   use { 'folke/trouble.nvim' }
