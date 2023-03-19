@@ -11,28 +11,15 @@
     -- friendly-snippets
 
 local lspconfig = require('lspconfig')
-local lsp_defaults = lspconfig.util.default_config
+local M = {}
 
--- Configure default capabilities to announce to LSP servers
-lsp_defaults.capabilities = vim.tbl_deep_extend(
-  'force',
-  lsp_defaults.capabilities,
-  require('cmp_nvim_lsp').default_capabilities()
-)
+-- 
+-- things that can go out
+--
 
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
-
--- Diagnostics symbols for display in the sign column.
-local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-vim.cmd('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
 
 -- completion source stuff (nvim-cmp)
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+M.capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Configure lspconfig with language servers
 
@@ -70,3 +57,5 @@ lspconfig.gopls.setup{
 lspconfig.terraformls.setup{
   capabilities = capabilities
 }
+
+return M

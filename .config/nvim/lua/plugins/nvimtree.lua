@@ -1,9 +1,7 @@
--- init.lua
-
 -- setup with all defaults
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
 -- nested options are documented by accessing them with `.` (eg: `:help nvim-tree.view.mappings.list`).
-require'nvim-tree'.setup { -- BEGIN_DEFAULT_OPTS
+local options = {
   auto_reload_on_write = true,
   create_in_closed_folder = false,
   disable_netrw = false,
@@ -22,7 +20,6 @@ require'nvim-tree'.setup { -- BEGIN_DEFAULT_OPTS
     adaptive_size = false,
     centralize_selection = false,
     width = 30,
-    height = 30,
     hide_root_folder = false,
     side = "left",
     preserve_window_proportions = false,
@@ -120,7 +117,6 @@ require'nvim-tree'.setup { -- BEGIN_DEFAULT_OPTS
   },
   filesystem_watchers = {
     enable = false,
-    interval = 100,
   },
   git = {
     enable = true,
@@ -174,4 +170,6 @@ require'nvim-tree'.setup { -- BEGIN_DEFAULT_OPTS
       watcher = false,
     },
   },
-} -- END_DEFAULT_OPTS
+}
+
+return options

@@ -1,109 +1,202 @@
-local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+--ref: https://github.com/wbthomason/dotfiles/blob/main/dot_config/nvim/lua/plugins.lua
+
+--
+-- lazy.nvim Bootstrap
+--
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+
+--
+-- lazy.nvim plugin loading
+--
+
+local lua_path = function(name)
+  return string.format("require'plugins.%s'", name)
 end
 
--- A lot has been borrowed from https://github.com/crivotz/nv-ide/blob/master/lua/plugins.lua
--- In this file
---
--- Other things worth looking at
--- https://github.com/rafamadriz/dotfiles/blob/b90a6107915db55fba97d161a002e3902a25dd09/private_dot_config/nvim/lua/plugins/init.lua
+require("lazy").setup({
 
--- This block will get packer to update all the plugins on buffer write, beware
--- Run PackerSync to download them
-vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = "plugins.lua",
-  command = "source <afile> | PackerCompile", 
-})
-
-return require('packer').startup(function(use)
-
-  local lua_path = function(name)
-    return string.format("require'plugins.%s'", name)
-  end
-
-  -- Get packer to keep itself updated
-  use { 'wbthomason/packer.nvim' }
+  -- Colorscheme
+  { 
+    'sainnhe/gruvbox-material',
+    lazy = false,
+    priority = 1000,
+    config = function() 
+      vim.g.gruvbox_material_background = "medium" -- hard, soft, medium
+      vim.g.gruvbox_material_palette = "original" -- original, mix, material
+      vim.g.gruvbox_material_enable_italic = 1
+      vim.g.gruvbox_material_sign_column_background = 'none'
+      vim.cmd([[colorscheme gruvbox-material]])
+    end
+  },
 
   -- Icons
-  use { 'nvim-tree/nvim-web-devicons' }
+  { "nvim-tree/nvim-web-devicons" },
 
   -- API features
-  use { 'nvim-lua/popup.nvim' }
-  use { 'nvim-lua/plenary.nvim' }
+  { 'nvim-lua/popup.nvim' },
+  { 'nvim-lua/plenary.nvim' },
 
   -- General
-  use { 'zhimsel/vim-stay' } -- Buffer states
-  use { 'sheerun/vim-polyglot' } -- Extra syntax highlighting
-  use { 'tpope/vim-sensible' } -- Sensible set of defaults
-  use { 'tpope/vim-surround' } -- Vim Surround
-  use { 'numToStr/Comment.nvim', config = lua_path"comment"} 
-  use { 'junegunn/vim-easy-align' }
-  use { 'chrisbra/csv.vim' }
-  use {
+  { 'zhimsel/vim-stay' },     -- Buffer states
+  { 'sheerun/vim-polyglot' }, -- Extra syntax highlighting
+  { 'tpope/vim-sensible' },
+  { 'tpope/vim-surround' },
+  { 'junegunn/vim-easy-align' },
+  { 
+    'chrisbra/csv.vim',
+    ft = "csv",
+  },
+  {
     'lewis6991/gitsigns.nvim',
-    config = function()
-      require('gitsigns').setup()
+    opts = function()
+      return require "plugins.gitsigns"
     end
-  }
-  
-  -- LSP
-  use { 'neovim/nvim-lspconfig' }
-  use { 'onsails/lspkind-nvim' } -- Adds little pictures to the autocomplete
-  use { 'fatih/vim-go' }
-  use { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' }
-  use { 'folke/trouble.nvim' }
-  -- use { 'folke/todo-comments.nvim', config = lua_path"todo-comments" }
-  -- use { 'folke/which-key.nvim', config = lua_path"which-key" }
+  },
+  { 
+    'numToStr/Comment.nvim',
+    opts = function()
+      return require "plugins.comment"
+    end
+  },
 
+  -- LSP
+  {
+    "williamboman/mason.nvim",
+    cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
+    opts = function()
+      return require "plugins.mason"
+    end,
+    config = function(_, opts)
+      require("mason").setup(opts)
+
+      -- custom nvchad cmd to install all mason binaries listed
+      vim.api.nvim_create_user_command("MasonInstallAll", function()
+        vim.cmd("MasonInstall " .. table.concat(opts.ensure_installed, " "))
+      end, {})
+    end,
+  },
+  { 
+    'neovim/nvim-lspconfig',
+    config = function()
+      return require "plugins.lspconfig"
+    end,
+  },
+  
+  { 'fatih/vim-go' },
+  { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
+  { 'folke/trouble.nvim' },
+  -- { 'folke/todo-comments.nvim', config = lua_path"todo-comments" }
 
   -- Autocomplete
-  use ({
+  {
       'hrsh7th/nvim-cmp',
-      requires = {
+      event = "InsertEnter",
+      dependencies = {
         { 'hrsh7th/cmp-nvim-lsp' },
         { 'hrsh7th/cmp-buffer'},
         { 'hrsh7th/cmp-path' },
         { 'hrsh7th/cmp-cmdline' },
         { 'hrsh7th/cmp-vsnip' },
         { 'hrsh7th/vim-vsnip' },
-        { 'hrsh7th/cmp-nvim-lsp-signature-help' }
-     }
-  })
+        { 'hrsh7th/cmp-nvim-lsp-signature-help' },
+        { 'onsails/lspkind-nvim' }, -- Adds little pictures to the autocomplete
+     },
+    opts = function()
+      return require "plugins.cmp"
+    end,
+  },
 
-  -- Explorer
-  use { 'kyazdani42/nvim-tree.lua', config = lua_path"nvimtree" }
-
-  -- Colorscheme
-  use { 'sainnhe/gruvbox-material' }
+  -- File Management
+  { 
+    'nvim-tree/nvim-tree.lua',
+    cmd = { "NvimTreeToggle", "NvimTreeFocus" , "NvimTreeOpen"},
+    opts = function()
+      return require "plugins.nvimtree"
+    end
+  },
 
   -- Color Renderer
-  use { 'crivotz/nvim-colorizer.lua', config = lua_path"colorizer" }
-  
-  -- Lines
-  use { 'famiu/feline.nvim' , config = lua_path"feline" } -- Statusline
-  --use { 'romgrk/barbar.nvim' } -- Puts your buffers up in the tab bar
-  use {
-    "nanozuki/tabby.nvim",
-    config = function() require("tabby").setup() end,
-  }
+  { 
+    'NvChad/nvim-colorizer.lua',
+    opts = function()
+      return require "plugins.colorizer"
+    end, 
+    config = function(_, opts)
+      require("colorizer").setup(opts)
 
+      -- execute colorizer as soon as possible
+      vim.defer_fn(function()
+        require("colorizer").attach_to_buffer(0)
+      end, 0)
+    end,
+  },
+
+  -- Lines
+  { 
+    'famiu/feline.nvim',
+    opts = function()
+      return require "plugins.feline"
+    end, 
+  }, 
+
+  -- Statusline
+  {
+    "nanozuki/tabby.nvim",
+    opts = function()
+      return {}
+    end,
+  },
+
+  -- Misc
+  {
+    "folke/which-key.nvim",
+    keys = { "<leader>", '"', "'", "`" },
+    opts = function()
+      return require "plugins.whichkey"
+    end,
+  },
 
   -- Telescope
-  -- If for some weird reason you're getting the chkstk_darwin issue, find out where fzy-lua-native got installed to
-  -- and run its makefile
-  use { 'nvim-telescope/telescope.nvim', config = lua_path"telescope" }
-  use { 'nvim-telescope/telescope-fzy-native.nvim', run="make" }
-  use { 'cljoly/telescope-repo.nvim' }
-  use { 'nvim-telescope/telescope-dap.nvim' }
+  -- If for some weird reason you're getting the chkstk_darwin issue, find out where fzy-lua-native got installed to and run its makefile
+  {
+    "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
+
+    opts = function()
+      return require("plugins.telescope")
+    end,
+
+    config = function(_, opts)
+      local telescope = require("telescope")
+      telescope.setup(opts)
+
+      -- load extensions
+      -- for _, ext in ipairs(opts.extensions_list) do
+      --   telescope.load_extension(ext)
+      -- end
+    end,
+    dependencies = {
+      { 'nvim-telescope/telescope-fzy-native.nvim', run="make" },
+      { 'cljoly/telescope-repo.nvim' },
+      { 'nvim-telescope/telescope-dap.nvim' }
+    }
+  }
 
   -- Copilot
-  --use { 'github/copilot.vim' } -- run :Copilot setup
+  --{ 'github/copilot.vim' } -- run :Copilot setup
 
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
+
+})

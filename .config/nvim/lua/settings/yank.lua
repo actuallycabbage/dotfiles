@@ -10,7 +10,7 @@
 -- endif
 -- ]], true)
 
-vim.api.nvim_exec(
-[[
-set clipboard+=unnamedplus
-]], true)
+-- vim.api.nvim_exec(
+-- [[
+-- set clipboard+=unnamedplus
+-- ]], true)

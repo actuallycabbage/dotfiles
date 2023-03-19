@@ -380,14 +380,16 @@ table.insert(components.inactive[3], common_fileinfo_icon)
 -- fileType
 table.insert(components.inactive[3], common_fileinfo_type)
 
-require('feline').setup({
+local options = {
   theme = colors,
   default_bg = bg,
   default_fg = fg,
   vi_mode_colors = vi_mode_colors,
   components = components,
   force_inactive = force_inactive,
-})
+}
+
+return options
 
 
 -- local lsp = require 'feline.providers.lsp'
