@@ -1,0 +1,20 @@
+# ref: https://github.com/jessfraz/dotfiles/blob/master/.gitconfig
+[user]
+	name = Sam
+
+[core]
+	editor = vim
+
+# always connect via ssh
+[url "git@github.com:github"]
+	insteadOf = "https://github.com/github"
+	insteadOf = "github:github"
+	insteadOf = "git://github.com/github"
+
+[url "git@github.com:"]
+	pushInsteadOf = "https://github.com/"
+	pushInsteadOf = "github:"
+	pushInsteadOf = "git://github.com/"
+
+[url "git://github.com/"]
+	insteadOf = "github:"

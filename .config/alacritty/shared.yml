@@ -9,13 +9,8 @@ window:
 
 font:
   normal:
-    family: 'FantasqueSansMono Nerd Font'
+    family: 'FantasqueSansM Nerd Font'
     style: Regular
-
-  size: 13.0
-  offset:
-    x: 1
-    y: 1
 
 colors:
   primary:
