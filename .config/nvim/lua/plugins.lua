@@ -11,7 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",
     lazypath,
   })
 end
@@ -50,6 +50,7 @@ require("lazy").setup({
   { 'tpope/vim-sensible' },
   { 'tpope/vim-surround' },
   { 'junegunn/vim-easy-align' },
+  -- { 'hrsh7th/vim-gindent' },
   { 
     'chrisbra/csv.vim',
     ft = "csv",
@@ -66,12 +67,8 @@ require("lazy").setup({
       return require "plugins.comment"
     end
   },
-  --
-  -- { 'folke/todo-comments.nvim', config = lua_path"todo-comments" }
 
-  -- Extra syntax highlighting
-  -- Removed and replaced by nvim-treesitter
-  -- { 'sheerun/vim-polyglot' }
+  -- { 'folke/todo-comments.nvim', config = lua_path"todo-comments" }
 
   -- LSP
   {
@@ -96,18 +93,32 @@ require("lazy").setup({
     end,
   },
   {
-      "glepnir/lspsaga.nvim",
-      event = "LspAttach",
-      config = function()
-        require("lspsaga").setup({})
-      end,
-      dependencies = { {"nvim-tree/nvim-web-devicons"} }
+    "glepnir/lspsaga.nvim",
+    event = "LspAttach",
+    opts = function()
+      return require "plugins.lspsaga"
+    end,
+    config = function(_, opts)
+      -- require("lspsaga").setup(opts)
+      require("lspsaga").setup(opts)
+    end,
+    dependencies = { {"nvim-tree/nvim-web-devicons"} }
   },
 
-  -- { 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
-  
+  -- DAP
+{
+    'mfussenegger/nvim-dap',
+    dependencies = {
+    	'leoluz/nvim-dap-go',
+    	'nvim-treesitter/nvim-treesitter'
+    },
+    config = function()
+     return require "plugins.nvim-dap-go"
+    end,
+
+},
+
   -- Go
-  -- { 'fatih/vim-go' },
   {
     "ray-x/go.nvim",
     dependencies = {  -- optional packages
@@ -148,7 +159,7 @@ require("lazy").setup({
   -- File Management
   { 
     'nvim-tree/nvim-tree.lua',
-    cmd = { "NvimTreeToggle", "NvimTreeFocus" , "NvimTreeOpen"},
+    cmd = { "NvimTreeToggle", "NvimTreeFocus" , "NvimTreeOpen", "NvimTreeFindFileToggle"},
     opts = function()
       return require "plugins.nvimtree"
     end
@@ -179,7 +190,15 @@ require("lazy").setup({
       return require "plugins.treesitter"
     end,
     config = function(_, opts)
-	    require('nvim-treesitter.configs').setup(opts)
+	require('nvim-treesitter.configs').setup(opts)
+	vim.api.nvim_create_autocmd({ "BufEnter", "BufNew", "BufWinEnter"  }, {
+		group = vim.api.nvim_create_augroup("ts_fold_workaround", { clear = true }),
+		callback = function(e) 
+			-- vim.opt.nofoldenable=true;
+			vim.opt.foldmethod="expr";
+			vim.opt.foldexpr="nvim_treesitter#foldexpr()";
+		end
+	})
     end
   },
 
@@ -202,7 +221,7 @@ require("lazy").setup({
   -- Misc
   {
     "folke/which-key.nvim",
-    keys = { "<leader>", '"', "'", "`" },
+    keys = {'"', "'", "`" },
     opts = function()
       return require "plugins.whichkey"
     end,

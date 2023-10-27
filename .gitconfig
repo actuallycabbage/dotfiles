@@ -3,7 +3,7 @@
 	name = Sam
 
 [core]
-	editor = vim
+	editor = nvim
 
 # always connect via ssh
 [url "git@github.com:github"]

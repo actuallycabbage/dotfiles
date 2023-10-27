@@ -1,5 +1,5 @@
 local options = {
-  ensure_installed = { "lua-language-server", "gopls" }, -- not an option from mason.nvim
+  ensure_installed = { "lua-language-server", "gopls", "delve", "clangd", "terraform-ls", "pyright"}, -- not an option from mason.nvim
 
   PATH = "skip",
 

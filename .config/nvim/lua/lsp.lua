@@ -2,13 +2,13 @@
 -- https://vonheikemen.github.io/devlog/tools/setup-nvim-lspconfig-plus-nvim-cmp
 --
 --
-    -- nvim-cmp
-    -- cmp-buffer
-    -- cmp-path
-    -- cmp_luasnip
-    -- cmp-nvim-lsp
-    -- LuaSnip
-    -- friendly-snippets
+-- nvim-cmp
+-- cmp-buffer
+-- cmp-path
+-- cmp_luasnip
+-- cmp-nvim-lsp
+-- LuaSnip
+-- friendly-snippets
 
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
@@ -69,4 +69,9 @@ lspconfig.gopls.setup{
 -- https://github.com/hashicorp/terraform-ls/releases
 lspconfig.terraformls.setup{
   capabilities = capabilities
+}
+
+
+lspconfig.clangd.setup{
+  capabilities = capabilities 
 }

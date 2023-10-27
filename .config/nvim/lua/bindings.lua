@@ -1,54 +1,6 @@
-
 -- Insert remap
 vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = true, silent = true })
 
--- LSP (without lspsaga)
--- vim.api.nvim_create_autocmd('LspAttach', {
---   desc = 'LSP actions',
---   callback = function()
---     local bufmap = function(mode, lhs, rhs)
---       local opts = {buffer = true}
---       vim.keymap.set(mode, lhs, rhs, opts)
---     end
---
---     -- Displays hover information about the symbol under the cursor
---     bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
---
---     -- Jump to the definition
---     bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
---
---     -- Jump to declaration
---     bufmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
---
---     -- Lists all the implementations for the symbol under the cursor
---     bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
---
---     -- Jumps to the definition of the type symbol
---     bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
---
---     -- Lists all the references 
---     bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
---
---     -- Displays a function's signature information
---     bufmap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
---
---     -- Renames all references to the symbol under the cursor
---     bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
---
---     -- Selects a code action available at the current cursor position
---     bufmap('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>')
---     bufmap('x', '<F4>', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
---
---     -- Show diagnostics in a floating window
---     bufmap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
---
---     -- Move to the previous diagnostic
---     bufmap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
---
---     -- Move to the next diagnostic
---     bufmap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
---   end
--- })
 
 -- LSP (lspsaga)
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -77,7 +29,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- If there is no definition, it will instead be hidden
     -- When you use an action in finder like "open vsplit",
     -- you can use <C-t> to jump back
-    keymap("n", "gh", "<cmd>Lspsaga lsp_finder<CR>")
+    keymap("n", "gh", "<cmd>Lspsaga finder<CR>")
     
     -- Code action
     keymap({"n","v"}, "<leader>ca", "<cmd>Lspsaga code_action<CR>")
@@ -129,11 +81,22 @@ vim.api.nvim_create_autocmd("BufWritePre", {
    require('go.format').goimport()
   end,
   group = format_sync_grp,
+
 })
 
+-- easyalign
+-- Start interactive EasyAlign in visual mode (e.g. vipga)
+vim.keymap.set('x', 'ga', '<cmd>EasyAlign<CR>')
+-- Start interactive EasyAlign for a motion/text object (e.g. gaip)
+vim.keymap.set('n', 'ga', '<cmd>EasyAlign<CR>')
 
--- local builtin = require('telescope.builtin')
--- vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
--- vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
--- vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+-- telescope maps
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fp', builtin.git_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+
+vim.api.nvim_set_keymap('n', '<leader>ft', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
+
 -- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+--
