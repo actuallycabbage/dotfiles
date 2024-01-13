@@ -84,6 +84,12 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 })
 
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   pattern = {"*.ts", "*.js", "*.tsx", "*.jsx"},
+--   command 
+--   group = format_sync_grp,
+-- })
+
 -- easyalign
 -- Start interactive EasyAlign in visual mode (e.g. vipga)
 vim.keymap.set('x', 'ga', '<cmd>EasyAlign<CR>')
@@ -95,6 +101,7 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fp', builtin.git_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 
 vim.api.nvim_set_keymap('n', '<leader>ft', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 

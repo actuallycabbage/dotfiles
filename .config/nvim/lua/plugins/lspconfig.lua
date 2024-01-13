@@ -45,6 +45,9 @@ lspconfig.gopls.setup{
 lspconfig.terraformls.setup{
 }
 
+lspconfig.tsserver.setup{
+}
+
 -- lspconfig.hls.setup{
 -- }
 

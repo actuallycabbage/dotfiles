@@ -66,12 +66,17 @@ lspconfig.gopls.setup{
   }
 }
 
--- https://github.com/hashicorp/terraform-ls/releases
-lspconfig.terraformls.setup{
+lspconfig.tsserver.setup{
   capabilities = capabilities
 }
 
+-- -- https://github.com/hashicorp/terraform-ls/releases
+-- lspconfig.terraformls.setup{
+--   capabilities = capabilities
+-- }
+
 
 lspconfig.clangd.setup{
-  capabilities = capabilities 
+  capabilities = capabilities
 }
+

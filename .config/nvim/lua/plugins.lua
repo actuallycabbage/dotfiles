@@ -226,6 +226,9 @@ require("lazy").setup({
       return require "plugins.whichkey"
     end,
   },
+  {
+    "tpope/vim-abolish"
+  },
 
   -- Telescope
   -- If for some weird reason you're getting the chkstk_darwin issue, find out where fzy-lua-native got installed to and run its makefile
@@ -252,6 +255,12 @@ require("lazy").setup({
       { 'cljoly/telescope-repo.nvim' },
       { 'nvim-telescope/telescope-dap.nvim' }
     }
+  },
+
+  -- formatting
+  {
+    "sbdchd/neoformat",
+    cmd = {"Neoformat"},
   }
 
   -- Copilot
