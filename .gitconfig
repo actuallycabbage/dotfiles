@@ -1,9 +1,32 @@
 # ref: https://github.com/jessfraz/dotfiles/blob/master/.gitconfig
 [user]
 	name = Sam
+	email = sambe247@gmail.com
+	signingkey = ~/.ssh/id_rsa
 
 [core]
 	editor = nvim
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = true
+
+[merge]
+	tool = meld
+
+[diff]
+	colorMoved = default
+
+[gpg]
+	format = ssh
+
+[commit]
+	gpgsign = true
 
 # always connect via ssh
 [url "git@github.com:github"]
@@ -18,3 +41,6 @@
 
 [url "git://github.com/"]
 	insteadOf = "github:"
+
+[rerere]
+	enabled = true

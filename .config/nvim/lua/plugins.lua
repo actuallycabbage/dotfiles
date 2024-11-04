@@ -25,11 +25,11 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 
   -- Colorscheme
-  { 
+  {
     'sainnhe/gruvbox-material',
     lazy = false,
     priority = 1000,
-    config = function() 
+    config = function()
       vim.g.gruvbox_material_background = "medium" -- hard, soft, medium
       vim.g.gruvbox_material_palette = "original" -- original, mix, material
       vim.g.gruvbox_material_enable_italic = 1
@@ -51,7 +51,7 @@ require("lazy").setup({
   { 'tpope/vim-surround' },
   { 'junegunn/vim-easy-align' },
   -- { 'hrsh7th/vim-gindent' },
-  { 
+  {
     'chrisbra/csv.vim',
     ft = "csv",
   },
@@ -61,7 +61,7 @@ require("lazy").setup({
       return require "plugins.gitsigns"
     end
   },
-  { 
+  {
     'numToStr/Comment.nvim',
     opts = function()
       return require "plugins.comment"
@@ -86,7 +86,7 @@ require("lazy").setup({
       end, {})
     end,
   },
-  { 
+  {
     'neovim/nvim-lspconfig',
     config = function()
       return require "plugins.lspconfig"
@@ -106,33 +106,125 @@ require("lazy").setup({
   },
 
   -- DAP
-{
-    'mfussenegger/nvim-dap',
-    dependencies = {
-    	'leoluz/nvim-dap-go',
-    	'nvim-treesitter/nvim-treesitter'
-    },
-    config = function()
-     return require "plugins.nvim-dap-go"
-    end,
-
-},
-
-  -- Go
   {
-    "ray-x/go.nvim",
-    dependencies = {  -- optional packages
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    config = function()
-      require("go").setup()
+    'mfussenegger/nvim-dap',
+    -- opts = function()
+    --   return require "plugins.nvim-dap"
+    -- end,
+    config = function(_, opts)
+      require("dap").adapters["pwa-node"] = {
+	type = "server",
+	host = "localhost",
+	port = "${port}",
+	executable = {
+		command = "js-debug-adapter",
+		args = { "${port}" },
+	},
+      }
+      local js_based_languages = { "typescript", "javascript", "typescriptreact", "javascriptreact"}
+      for _, language in ipairs(js_based_languages) do
+        require("dap").configurations[language] = {
+          {
+            type = "pwa-node",
+            request = "launch",
+            name = "Launch file",
+            program = "${file}",
+            -- cwd = "${workspaceFolder}",
+	    cwd = vim.fn.getcwd(),
+
+          },
+          {
+            type = "pwa-node",
+            request = "attach",
+            name = "Attach",
+            processId = function()
+	      return require'dap.utils'.pick_process({filter = 'node'})
+	    end,
+            -- cwd = "${workspaceFolder}",
+	    cwd = vim.fn.getcwd(),
+          }
+        }
+      end
     end,
-    event = {"CmdlineEnter"},
-    ft = {"go", 'gomod'},
-    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   },
+
+ --  -- Javascript dap stuff
+ --  -- TODO: only attach on typescript / javascript files
+ --  {
+ --    'mxsdev/nvim-dap-vscode-js',
+ --    dependencies = {
+	-- 'mfussenegger/nvim-dap'
+ --    },
+ --    config = function(_, _)
+ --      require("dap-vscode-js").setup({
+	--  -- Installed by Mason
+ --        debugger_cmd = { "js-debug-adapter" },
+ --        adapters = { 'chrome', 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost', 'node', 'chrome' },
+	-- port = "${port}",
+ --      })
+	--
+ --      local js_based_languages = { "typescript", "javascript", "typescriptreact" }
+	--
+ --      for _, language in ipairs(js_based_languages) do
+	-- print(language);
+ --        require("dap").configurations[language] = {
+ --          {
+ --            type = "pwa-node",
+ --            request = "launch",
+ --            name = "Launch file",
+ --            program = "${file}",
+ --            cwd = "${workspaceFolder}",
+ --          },
+ --          {
+ --            type = "pwa-node",
+ --            request = "attach",
+ --            name = "Attach",
+ --            processId = function()
+	--       return require'dap.utils'.pick_process({filter = 'node'})
+	--     end,
+ --            cwd = "${workspaceFolder}",
+ --          }
+ --        }
+ --      end
+ --    end,
+ --  },
+
+
+  -- {
+  --   "rcarriga/nvim-dap-ui",
+  --   dependencies = {
+  --     "mfussenegger/nvim-dap",
+  --     "nvim-neotest/nvim-nio"
+  --   },
+  --   opts = function()
+  --     return require("plugins.dapui")
+  --   end,
+  --
+  --   config = function(_, opts)
+  --     require('dapui').setup(opts)
+  --
+  --     -- load extensions
+  --     -- for _, ext in ipairs(opts.extensions_list) do
+  --     --   telescope.load_extension(ext)
+  --     -- end
+  --   end,
+  -- },
+
+  -- -- Go
+  -- {
+  --   "ray-x/go.nvim",
+  --   dependencies = {  -- optional packages
+  --     "ray-x/guihua.lua",
+  --     "neovim/nvim-lspconfig",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   config = function()
+  --     require("go").setup()
+  --   end,
+  --   event = {"CmdlineEnter"},
+  --   ft = {"go", 'gomod'},
+  --   build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  -- },
 
   -- Git
   { 'folke/trouble.nvim' },
@@ -157,7 +249,7 @@ require("lazy").setup({
   },
 
   -- File Management
-  { 
+  {
     'nvim-tree/nvim-tree.lua',
     cmd = { "NvimTreeToggle", "NvimTreeFocus" , "NvimTreeOpen", "NvimTreeFindFileToggle"},
     opts = function()
@@ -166,11 +258,11 @@ require("lazy").setup({
   },
 
   -- Color Renderer
-  { 
+  {
     'NvChad/nvim-colorizer.lua',
     opts = function()
       return require "plugins.colorizer"
-    end, 
+    end,
     config = function(_, opts)
       require("colorizer").setup(opts)
 
@@ -184,7 +276,7 @@ require("lazy").setup({
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+    -- cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
     build = ":TSUpdate",
     opts = function()
       return require "plugins.treesitter"
@@ -193,7 +285,7 @@ require("lazy").setup({
 	require('nvim-treesitter.configs').setup(opts)
 	vim.api.nvim_create_autocmd({ "BufEnter", "BufNew", "BufWinEnter"  }, {
 		group = vim.api.nvim_create_augroup("ts_fold_workaround", { clear = true }),
-		callback = function(e) 
+		callback = function(e)
 			-- vim.opt.nofoldenable=true;
 			vim.opt.foldmethod="expr";
 			vim.opt.foldexpr="nvim_treesitter#foldexpr()";
@@ -201,14 +293,20 @@ require("lazy").setup({
 	})
     end
   },
+  -- {
+  --   "windwp/nvim-ts-autotag",
+  --   config = function (_, opts)
+  --     return require("nvim-ts-autotag").setup
+  --   end
+  -- },
 
   -- Lines
-  { 
+  {
     'famiu/feline.nvim',
     opts = function()
       return require "plugins.feline"
-    end, 
-  }, 
+    end,
+  },
 
   -- Statusline
   {
@@ -226,6 +324,9 @@ require("lazy").setup({
       return require "plugins.whichkey"
     end,
   },
+
+  -- eg: :%Subvert/facilit{y,ies}/building{,s}/g
+  -- does fancy search and replaces
   {
     "tpope/vim-abolish"
   },

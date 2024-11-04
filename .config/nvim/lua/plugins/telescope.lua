@@ -18,6 +18,7 @@ local options = {
       "--line-number",
       "--column",
       "--smart-case",
+      "--glob", "!pnpm-lock.yaml"
     },
     prompt_prefix = "   ",
     selection_caret = "  ",

@@ -18,6 +18,8 @@ export PATH=$PATH:$HOME/.local/share/nvim/mason/bin # nvim mason stuff
 export PATH=/usr/local/bin/:$PATH
 export PATH=$PATH:/opt/local/bin/
 
+alias tree=tree --gitignore
+
 # ---- ALIAS
 alias vim=nvim
 
@@ -44,7 +46,8 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+# export NVM_DIR="/usr/share/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
@@ -55,3 +58,12 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+#
+
+alias grep=grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox,node_modules}
+
+alias sl='sl -e'
+
+eval "$(zoxide init zsh)"
+
+alias tf='terraform'

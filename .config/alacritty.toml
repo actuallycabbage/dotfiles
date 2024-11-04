@@ -1,0 +1,4 @@
+import = ["/home/sam/.config/alacritty/shared.toml"]
+
+[font]
+size = 16.0
