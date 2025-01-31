@@ -93,7 +93,7 @@ require("lazy").setup({
     end,
   },
   {
-    "glepnir/lspsaga.nvim",
+    "nvimdev/lspsaga.nvim",
     event = "LspAttach",
     opts = function()
       return require "plugins.lspsaga"

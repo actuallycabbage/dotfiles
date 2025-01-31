@@ -11,12 +11,19 @@ export LC_ALL=en_US.UTF-8
 
 # ---- PATH
 export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:/opt/homebrew/bin
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/appimage # not sure what do do with this ione
 export PATH=$PATH:$HOME/.local/share/nvim/mason/bin # nvim mason stuff
-
 export PATH=/usr/local/bin/:$PATH
 export PATH=$PATH:/opt/local/bin/
+
+# ---- CARGO
+export PATH=$PATH:$HOME/.cargo/bin
+
+# ---- JAVA
+export JAVA_HOME="/opt/homebrew/opt/openjdk"
+export PATH="$JAVA_HOME/bin:$PATH"
 
 alias tree=tree --gitignore
 
@@ -67,3 +74,6 @@ alias sl='sl -e'
 eval "$(zoxide init zsh)"
 
 alias tf='terraform'
+
+alias curl='curl -s'
+

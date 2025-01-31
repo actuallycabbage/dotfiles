@@ -45,9 +45,6 @@ lspconfig.gopls.setup{
 lspconfig.terraformls.setup{
 }
 
-lspconfig.tsserver.setup{
-}
-
 lspconfig.prismals.setup{
 }
 
@@ -57,7 +54,7 @@ lspconfig.clangd.setup{
 lspconfig.rust_analyzer.setup{
 }
 
--- lspconfig.hls.setup{
--- }
+lspconfig.vtsls.setup{
+}
 
 return {}
