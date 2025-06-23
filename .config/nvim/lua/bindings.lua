@@ -2,6 +2,9 @@
 vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = true, silent = true })
 
 
+-- idk for some reason Lspsaga show_line_diagnostics will not work without severity_sort true;
+vim.diagnostic.config({ severity_sort = true })
+
 -- LSP (lspsaga)
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = "Lspsaga actions",

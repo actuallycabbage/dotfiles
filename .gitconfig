@@ -1,4 +1,8 @@
 # ref: https://github.com/jessfraz/dotfiles/blob/master/.gitconfig
+
+# delta: https://github.com/dandavison/delta
+# see this for installation: https://dandavison.github.io/delta/installation.html
+
 [user]
 	name = Sam
 	email = sambe247@gmail.com
@@ -29,6 +33,7 @@
 	gpgsign = true
 
 # always connect via ssh
+# TODO: also add substitutions for GitLab
 [url "git@github.com:github"]
 	insteadOf = "https://github.com/github"
 	insteadOf = "github:github"
@@ -44,3 +49,6 @@
 
 [rerere]
 	enabled = true
+
+[pull]
+	rebase = true
