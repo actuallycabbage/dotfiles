@@ -87,6 +87,9 @@ require("lazy").setup({
   },
   {
     "neovim/nvim-lspconfig",
+    opts = {
+      inlay_hints = { enabled = false },
+    },
     config = function()
       return require("plugins.lspconfig")
     end,
@@ -378,13 +381,15 @@ require("lazy").setup({
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
-    version = false, -- Never set this value to "*"! Never!
+    version = false,
     opts = {
       provider = "claude",
-      claude = {
-        api_key_name = "ANTHROPIC_API_KEY", -- looks at global shell env
-        model = "claude-3-7-sonnet-20250219",
-      },
+       providers = {
+         claude = {
+           api_key_name = "ANTHROPIC_API_KEY",
+           model = "claude-sonnet-4-20250514",
+         },
+       }
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
@@ -422,10 +427,10 @@ require("lazy").setup({
         "MeanderingProgrammer/render-markdown.nvim",
         opts = {
           -- file_types = { "markdown", "Avante" },
-          file_types = {"Avante" },
+          file_types = { "Avante" },
         },
         -- ft = { "markdown", "Avante" },
-        ft = {"Avante" },
+        ft = { "Avante" },
       },
     },
     keys = {

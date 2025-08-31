@@ -3,7 +3,7 @@
 !.gitignore
 
 !/scripts
-!/scripts/*
+!/scripts/**
 
 !/.config
-!/.config/*
+!/.config/**

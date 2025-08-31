@@ -51,8 +51,20 @@ lspconfig.prismals.setup{
 lspconfig.clangd.setup{
 }
 
-lspconfig.rust_analyzer.setup{
-}
+-- configured by mrcjkb/rustaceanvim
+-- lspconfig.rust_analyzer.setup({
+--     settings = {
+--         ['rust-analyzer'] = {
+--             -- cargo = {
+--             --     allFeatures = true
+--             -- },
+--             checkOnSave = {
+--                 command = "clippy"
+--             }
+--         }
+--     }
+-- })
+
 
 lspconfig.vtsls.setup{
 }

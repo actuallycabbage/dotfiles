@@ -1,5 +1,0 @@
-import:
-  - ~/.config/alacritty/shared.yml
-
-font:
-  size: 14.0
