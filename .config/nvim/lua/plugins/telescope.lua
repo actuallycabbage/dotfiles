@@ -5,7 +5,7 @@ local previewers = require("telescope.previewers")
 local actions = require("telescope.actions")
 local sorters = require("telescope.sorters")
 
-local ignore_patterns = {"node_modules", "venv", "env"}
+local ignore_patterns = {"node_modules/", "venv/", "env/"}
 
 local options = {
   defaults = {

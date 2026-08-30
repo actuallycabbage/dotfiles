@@ -74,7 +74,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
     
     -- -- Floating terminal
     -- keymap({"n", "t"}, "<A-d>", "<cmd>Lspsaga term_toggle<CR>")
+
 end
+})
+
+-- general LspAttach that's not lspsaga
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local bufnr = args.buf
+
+    vim.keymap.set("n", "<leader>i", function()
+      local opts = { bufnr = bufnr }
+      vim.lsp.inlay_hint.enable(
+        not vim.lsp.inlay_hint.is_enabled(opts),
+        opts
+      )
+    end, { buffer = bufnr, desc = "Toggle inlay hints" })
+  end,
 })
 
 -- lsp inlay

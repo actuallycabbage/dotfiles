@@ -1,0 +1,16 @@
+font-family = "FantasqueSansM Nerd Font"
+font-size = 16
+font-style = monospace
+font-feature = -liga
+font-feature = -calt
+font-thicken = true
+
+window-decoration = false
+
+theme = Gruvbox Dark Hard
+
+# window-title = true
+# 
+# window-inherit-working-directory = true
+# 
+# gtk-titlebar = false

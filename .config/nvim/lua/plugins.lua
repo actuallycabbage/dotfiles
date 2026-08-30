@@ -333,11 +333,44 @@ require("lazy").setup({
 
   -- formatting
   {
-    "sbdchd/neoformat",
-    cmd = { "Neoformat" },
-    config = function ()
-      vim.g.rustfmt_edition_opt = "2024"
-    end
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        "<leader>f",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true })
+        end,
+        mode = "",
+        desc = "Format buffer",
+      },
+    },
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          javascript = { "biome", "prettier" },
+          typescript = { "biome", "prettier" },
+          javascriptreact = { "biome", "prettier" },
+          typescriptreact = { "biome", "prettier" },
+          rust = { "rustfmt" },
+          python = { "isort", "black" },
+        },
+        formatters = {
+          biome = {
+            condition = function(self, ctx)
+              return vim.fs.find({ "biome.json", "biome.jsonc" }, { path = ctx.filename, upward = true })[1]
+            end,
+          },
+          rustfmt = {
+            options = {
+              edition = "2024",
+            },
+          },
+        },
+        format_on_save = nil, -- disable auto-format on save, use manual formatting
+      })
+    end,
   },
 
   -- diff

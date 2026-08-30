@@ -1,9 +1,3 @@
-# --- Oh my ZSH
-ZSH_THEME="superjarin"
-# wedisagree
-# tonotdo
-plugins=(git)
-source $ZSH/oh-my-zsh.sh
 
 # --- Env
 export GOPATH=$HOME/go
@@ -12,6 +6,17 @@ export AWS_DEFAULT_PROFILE=default
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export DISPLAY=":0"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_DATA_HOME="$HOME/.local/share"
+
+# --- Oh my ZSH
+ZSH_THEME="superjarin"
+# wedisagree
+# tonotdo
+plugins=(git)
+source $ZSH/oh-my-zsh.sh
 
 # --- PATH
 export PATH="$PATH:${KREW_ROOT:-$HOME/.krew}/bin"

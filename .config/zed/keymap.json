@@ -1,0 +1,56 @@
+[
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "j k": "vim::NormalBefore"
+    }
+  },
+  {
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      "shift-k": "editor::Hover",
+      "g h": "editor::FindAllReferences",
+      "g d": "editor::GoToDefinition",
+      "g t": "editor::GoToTypeDefinition",
+      "f2": "editor::Rename",
+
+      "\\ c a": "editor::ToggleCodeActions",
+      "\\ c i": "call_hierarchy::ShowIncomingCalls",
+      "\\ c o": "call_hierarchy::ShowOutgoingCalls",
+      "\\ i": "editor::ToggleInlayHints",
+      "\\ o": "outline::Toggle",
+
+      "\\ s l": "editor::Hover",
+      "\\ s b": "diagnostics::DeployCurrentFile",
+      "\\ s w": "diagnostics::Deploy",
+      "\\ s c": "editor::Hover",
+
+      "\\ f": "editor::Format",
+      "\\ f f": "file_finder::Toggle",
+      "\\ f p": "file_finder::Toggle",
+      "\\ f g": "pane::DeploySearch",
+      "\\ f b": "tab_switcher::ToggleAll",
+      "\\ f t": "project_panel::ToggleFocus",
+
+      "\\ a": "agent::Toggle",
+      "\\ b": "editor::ToggleBreakpoint",
+
+      "f5": "debugger::Start"
+    }
+  },
+  {
+    "context": "vim_mode == visual && !menu",
+    "bindings": {
+      "\\ c a": "editor::ToggleCodeActions"
+    }
+  },
+  {
+    "context": "debugger_stopped > vim_mode == normal",
+    "bindings": {
+      "f5": "debugger::Continue",
+      "f10": "debugger::StepOver",
+      "f11": "debugger::StepInto",
+      "f12": "debugger::StepOut"
+    }
+  }
+]

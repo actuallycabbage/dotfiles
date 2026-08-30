@@ -21,10 +21,11 @@
 	side-by-side = true
 
 [merge]
-	tool = meld
+	tool = nvimdiff
 
 [diff]
 	colorMoved = default
+	external = difft
 
 [gpg]
 	format = ssh
@@ -52,3 +53,6 @@
 
 [pull]
 	rebase = true
+
+[push]
+	autoSetupRemote = true

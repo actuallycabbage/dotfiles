@@ -7,3 +7,10 @@
 
 !/.config
 !/.config/**
+
+/.config/dfx/**
+/.config/containers/**
+/.config/filezilla/**
+
+**.pem
+**.DS_Store
