@@ -259,18 +259,16 @@ require("lazy").setup({
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
     build = ":TSUpdate",
-    opts = function()
-      return require("plugins.treesitter")
-    end,
-    config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
+    config = function()
+      require("plugins.treesitter")
       vim.api.nvim_create_autocmd({ "BufEnter", "BufNew", "BufWinEnter" }, {
         group = vim.api.nvim_create_augroup("ts_fold_workaround", { clear = true }),
-        callback = function(e)
-          -- vim.opt.nofoldenable=true;
-          vim.opt.foldmethod = "expr"
-          vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+        callback = function()
+          vim.wo.foldmethod = "expr"
+          vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
         end,
       })
     end,
@@ -402,80 +400,72 @@ require("lazy").setup({
     },
   },
 
-  -- -- Augment (bad)
-  -- {
-  --   "augmentcode/augment.vim",
-  --   config = function(_, opts)
-  --     vim.g.augment_workspace_folders = { "~/workspace/liq/liquidium-platform" }
-  --   end,
-  -- },
-
   -- Avante
-  {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    version = false,
-    opts = {
-      provider = "claude",
-       providers = {
-         claude = {
-           api_key_name = "ANTHROPIC_API_KEY",
-           model = "claude-sonnet-4-20250514",
-         },
-       }
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = "make",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "echasnovski/mini.pick", -- for file_selector provider mini.pick
-      "nvim-telescope/telescope.nvim",
-      "hrsh7th/nvim-cmp",
-      "ibhagwan/fzf-lua", -- for file_selector provider fzf
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua", -- for providers='copilot'
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
-      {
-        -- Make sure to set this up properly if you have lazy=true
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = {
-          -- file_types = { "markdown", "Avante" },
-          file_types = { "Avante" },
-        },
-        -- ft = { "markdown", "Avante" },
-        ft = { "Avante" },
-      },
-    },
-    keys = {
-      {
-        "<leader>a",
-        function()
-          require("avante").toggle()
-        end,
-        desc = "Toggle Avante",
-      },
-    },
-  },
+  -- {
+  --   "yetone/avante.nvim",
+  --   event = "VeryLazy",
+  --   version = false,
+  --   opts = {
+  --     provider = "claude",
+  --      providers = {
+  --        claude = {
+  --          api_key_name = "ANTHROPIC_API_KEY",
+  --          model = "claude-sonnet-4-20250514",
+  --        },
+  --      }
+  --   },
+  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  --   build = "make",
+  --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "stevearc/dressing.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "MunifTanjim/nui.nvim",
+  --     --- The below dependencies are optional,
+  --     "echasnovski/mini.pick", -- for file_selector provider mini.pick
+  --     "nvim-telescope/telescope.nvim",
+  --     "hrsh7th/nvim-cmp",
+  --     "ibhagwan/fzf-lua", -- for file_selector provider fzf
+  --     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+  --     "zbirenbaum/copilot.lua", -- for providers='copilot'
+  --     {
+  --       -- support for image pasting
+  --       "HakonHarnes/img-clip.nvim",
+  --       event = "VeryLazy",
+  --       opts = {
+  --         -- recommended settings
+  --         default = {
+  --           embed_image_as_base64 = false,
+  --           prompt_for_file_name = false,
+  --           drag_and_drop = {
+  --             insert_mode = true,
+  --           },
+  --           -- required for Windows users
+  --           use_absolute_path = true,
+  --         },
+  --       },
+  --     },
+  --     {
+  --       -- Make sure to set this up properly if you have lazy=true
+  --       "MeanderingProgrammer/render-markdown.nvim",
+  --       opts = {
+  --         -- file_types = { "markdown", "Avante" },
+  --         file_types = { "Avante" },
+  --       },
+  --       -- ft = { "markdown", "Avante" },
+  --       ft = { "Avante" },
+  --     },
+  --   },
+  --   keys = {
+  --     {
+  --       "<leader>a",
+  --       function()
+  --         require("avante").toggle()
+  --       end,
+  --       desc = "Toggle Avante",
+  --     },
+  --   },
+  -- },
 
   -- Copilot
   --{ 'github/copilot.vim' } -- run :Copilot setup

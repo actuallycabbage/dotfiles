@@ -1,9 +1,7 @@
 -- Good reads
 -- https://vonheikemen.github.io/devlog/tools/setup-nvim-lspconfig-plus-nvim-cmp
 
-local lspconfig = require('lspconfig')
-
-lspconfig.lua_ls.setup{
+vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
       diagnostics = {
@@ -21,13 +19,10 @@ lspconfig.lua_ls.setup{
       },
     }
   }
-}
-
-lspconfig.pyright.setup{
-}
+})
 
 -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
-lspconfig.gopls.setup{
+vim.lsp.config("gopls", {
   settings = {
     gopls = {
       vulncheck = 'Imports', -- this feature is experimental and may be deleted
@@ -40,19 +35,10 @@ lspconfig.gopls.setup{
 --      linter = true,
     }
   }
-}
-
-lspconfig.terraformls.setup{
-}
-
-lspconfig.prismals.setup{
-}
-
-lspconfig.clangd.setup{
-}
+})
 
 -- configured by mrcjkb/rustaceanvim
--- lspconfig.rust_analyzer.setup({
+-- vim.lsp.config("rust_analyzer", {
 --     settings = {
 --         ['rust-analyzer'] = {
 --             -- cargo = {
@@ -65,8 +51,14 @@ lspconfig.clangd.setup{
 --     }
 -- })
 
-
-lspconfig.vtsls.setup{
-}
+vim.lsp.enable({
+  "lua_ls",
+  "pyright",
+  "gopls",
+  "terraformls",
+  "prismals",
+  "clangd",
+  "vtsls",
+})
 
 return {}
