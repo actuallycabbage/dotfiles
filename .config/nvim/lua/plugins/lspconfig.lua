@@ -59,6 +59,7 @@ vim.lsp.enable({
   "prismals",
   "clangd",
   "vtsls",
+  "solidity_ls_nomicfoundation",
 })
 
 return {}

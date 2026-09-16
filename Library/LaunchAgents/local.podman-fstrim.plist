@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.podman-fstrim</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/podman</string>
+        <string>machine</string>
+        <string>ssh</string>
+        <string>podman-machine-default</string>
+        <string>sudo -n systemctl start fstrim.service</string>
+    </array>
+
+    <key>StartInterval</key>
+    <integer>3600</integer>
+</dict>
+</plist>
