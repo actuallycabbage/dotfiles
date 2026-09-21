@@ -11,6 +11,9 @@
 /.config/dfx/**
 /.config/containers/**
 /.config/filezilla/**
+/.config/.wrangler/**
+/.config/zed/prompts/**
 
 **.pem
 **.DS_Store
+**.log
