@@ -1,3 +1,21 @@
+vim.filetype.add({ extension = { fbs = "flatbuffers" } })
+
+-- FlatBuffers is not bundled with nvim-treesitter. Register on TSUpdate because
+-- nvim-treesitter reloads its parser registry before installing or updating.
+vim.api.nvim_create_autocmd("User", {
+  pattern = "TSUpdate",
+  callback = function()
+    require("nvim-treesitter.parsers").flatbuffers = {
+      install_info = {
+        url = "https://github.com/yuanchenxi95/tree-sitter-flatbuffers",
+        -- Match the revision shipped in helix-editor/helix's languages.toml.
+        revision = "95e6f9ef101ea97e870bf6eebc0bd1fdfbaf5490",
+        queries = "queries",
+      },
+    }
+  end,
+})
+
 local parsers = {
   "lua",
   "go",
@@ -9,6 +27,7 @@ local parsers = {
   "typescript",
   "prisma",
   "lalrpop",
+  "flatbuffers",
 }
 
 -- Lazy may run :TSUpdate during the same startup; waiting prevents both jobs
@@ -29,6 +48,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "typescriptreact",
     "prisma",
     "lalrpop",
+    "flatbuffers",
   },
   callback = function()
     if pcall(vim.treesitter.start) then
